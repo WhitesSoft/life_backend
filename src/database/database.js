@@ -1,8 +1,7 @@
-require('dotenv').config();
-const Sequelize  = require("sequelize");
+const { Sequelize } = require("sequelize");
 
-const sequelize = new Sequelize(process.env.DB_DATABASE, process.env.DB_USER, process.env.DB_PASSWORD, {
-    host: process.env.DB_HOST, 
+const sequelize = new Sequelize('life', 'postgres', '1234', {
+    host: 'localhost', 
     dialect: 'postgres'
 });
 
@@ -15,28 +14,4 @@ const dbConnection = async () => {
     }
 };
 
-
-
-const db = {};
-
-db.Sequelize = Sequelize;
-db.sequelize = sequelize;
-
-db.ROLES = ["administrador", "asistente", "secretaria", "paciente"];
-
-// llamamos a nuestras entidades
-db.usuario = require('../models/usuario.models.js')(sequelize, Sequelize);
-db.rol = require('../models/rol.models.js')(sequelize, Sequelize);
-
-// relaciones
-db.rol.belongsToMany(db.usuario, {
-    through: "usuario_roles"
-});
-db.usuario.belongsToMany(db.rol, {
-    through: "usuario_roles"
-});
-
-
-
-
-module.exports = db;
+module.exports = { sq: sequelize, dbConnection };
