@@ -19,7 +19,7 @@ router
     .get('/test/secretaria', [authJwt.verifyToken, authJwt.isSecretaria], userController.secretariaBoard)
     .get('/test/asistente', [authJwt.verifyToken, authJwt.isAsistente], userController.asistenteBoard)
     .get('/test/administrador', [authJwt.verifyToken, authJwt.isAdmin], userController.adminBoard)
-
+// este es
 // router
 //     .get('/test/all', userController.allAccess)
 //     .get('/:userId', userController.getOneUser)
