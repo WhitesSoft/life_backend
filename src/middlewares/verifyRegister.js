@@ -2,6 +2,58 @@ const db = require('../database/database');
 const ROLES = db.ROLES;
 const dbUsuario = db.usuario;
 
+// checkDuplicateUsernameOrEmail = (req, res, next) => {
+//     // Username
+//     dbUsuario.findOne({
+//       where: {
+//         usuario: req.body.usuario
+//       }
+//     }).then(usuario => {
+//       if (usuario) {
+//         res.status(400).send({
+//           message: '¡Error! ¡El nombre de usuario ya está en uso!'
+//         });
+//         return;
+//       }
+  
+//       // Email
+//       dbUsuario.findOne({
+//         where: {
+//           correo: req.body.correo
+//         }
+//       }).then(usuario => {
+//         if (usuario) {
+//           res.status(400).send({
+//             message: '¡Error! ¡El nombre de usuario ya está en uso!'
+//           });
+//           return;
+//         }
+  
+//         next();
+//       });
+//     });
+//   };
+
+// Metodo para verificar el duplicado de usuarios
+checkDuplicateUsuario = (req, res, next) => {
+
+    // Verificar email
+    dbUsuario.findOne({
+        where: {
+            usuario: req.body.usuario
+        }
+    }).then(usuario => {
+        if (usuario) {
+            res.status(400).send({
+                message: '¡Error! ¡El nombre de usuario ya está en uso!'
+            });
+            return;
+        }
+        next();
+    });
+
+};
+
 // Metodo para verificar el duplicado de correos
 checkDuplicateEmail = (req, res, next) => {
 
@@ -39,6 +91,7 @@ checkRolesExisted = (req, res, next) => {
 };
 
 const verifyRegister = {
+    checkDuplicateUsuario: checkDuplicateUsuario,
     checkDuplicateEmail: checkDuplicateEmail,
     checkRolesExisted: checkRolesExisted
 };

@@ -27,15 +27,49 @@ db.ROLES = ["administrador", "asistente", "secretaria", "paciente"];
 // llamamos a nuestras entidades
 db.usuario = require('../models/usuario.models.js')(sequelize, Sequelize);
 db.rol = require('../models/rol.models.js')(sequelize, Sequelize);
+db.persona = require('../models/persona.model.js')(sequelize, Sequelize);
+db.odontologo = require('../models/odontologo.model.js')(sequelize, Sequelize);
+db.paciente = require('../models/paciente.model.js')(sequelize, Sequelize);
 
-// relaciones
+/* *** RELACIONES *** */
+
+// (Usuario y Roles) MANY_TO_MANY
 db.rol.belongsToMany(db.usuario, {
-    through: "usuario_roles"
+    through: 'usuario_roles'
 });
 db.usuario.belongsToMany(db.rol, {
-    through: "usuario_roles"
+    through: 'usuario_roles'
 });
 
+// (Usuario y Persona) ONE_TO_ONE
+db.usuario.hasOne(db.persona, {
+    foreignKey: 'id_usuario',
+    as: 'persona'
+});
+db.persona.belongsTo(db.usuario, {
+    foreignKey: 'id_usuario',
+    as: 'persona'
+});
+
+// (Usuario y Odontologo) ONE_TO_ONE (simulara la herencia)
+db.usuario.hasOne(db.odontologo, {
+    foreignKey: 'id_usuario',
+    as: 'odontologo'
+});
+db.odontologo.belongsTo(db.usuario, {
+    foreignKey: 'id_usuario',
+    as: 'odontologo'
+});
+
+// (Usuario y Paciente) ONE_TO_ONE (simulara la herencia)
+db.usuario.hasOne(db.paciente, {
+    foreignKey: 'id_usuario',
+    as: 'paciente'
+});
+db.paciente.belongsTo(db.usuario, {
+    foreignKey: 'id_usuario',
+    as: 'paciente'
+});
 
 
 
