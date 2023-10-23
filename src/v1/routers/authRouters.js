@@ -13,7 +13,8 @@ router.use(function (req, res, next) {
 });
 
 router
-    .post('/register', [verifyRegister.checkDuplicateEmail, verifyRegister.checkRolesExisted], authService.register)
+    .post('/registeradmin', [verifyRegister.checkDuplicateEmail, verifyRegister.checkDuplicateUsuario, verifyRegister.checkRolesExisted], authService.registeradmin)
+    .post('/register', [verifyRegister.checkDuplicateEmail, verifyRegister.checkDuplicateUsuario, verifyRegister.checkRolesExisted], authService.register)
     .post('/login', authService.login)
 
 
