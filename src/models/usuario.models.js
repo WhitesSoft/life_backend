@@ -15,6 +15,10 @@ module.exports = (sequelize, Sequelize) => {
     correo: {
       type: Sequelize.STRING
     }
+  },
+    {
+      timestamps: false
+    });
   }, { 
     timestamps: false 
   });
