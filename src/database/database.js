@@ -30,6 +30,7 @@ db.rol = require('../models/rol.models.js')(sequelize, Sequelize);
 db.persona = require('../models/persona.model.js')(sequelize, Sequelize);
 db.odontologo = require('../models/odontologo.model.js')(sequelize, Sequelize);
 db.paciente = require('../models/paciente.model.js')(sequelize, Sequelize);
+db.turno = require('../models/turno.models.js')(sequelize, Sequelize);
 
 /* *** RELACIONES *** */
 
@@ -62,15 +63,25 @@ db.odontologo.belongsTo(db.usuario, {
 });
 
 // (Usuario y Paciente) ONE_TO_ONE (simulara la herencia)
-db.usuario.hasOne(db.paciente, {
-    foreignKey: 'id_usuario',
-    as: 'paciente'
-});
-db.paciente.belongsTo(db.usuario, {
-    foreignKey: 'id_usuario',
-    as: 'paciente'
-});
+// db.usuario.hasOne(db.paciente, {
+//     foreignKey: 'id_usuario',
+//     as: 'paciente'
+// });
+// db.paciente.belongsTo(db.usuario, {
+//     foreignKey: 'id_usuario',
+//     as: 'paciente'
+// });
 
+// (Paciente y turnos) ONE_TO_MANY
+db.paciente.hasMany(db.turno, {
+    foreignKey: 'id_paciente', 
+    as: 'turnos', 
+    onDelete: 'CASCADE'
+});
+db.turno.belongsTo(db.paciente, {
+    foreignKey: 'id_paciente', 
+    as: 'paciente'
+});
 
 
 module.exports = db;

@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const v1UserRouter = require('./v1/routers/userRouters');
 const v1AuthRouter = require('./v1/routers/authRouters');
+const v1PacienteRouter = require('./v1/routers/pacienteRouters');
+const v1TurnoRouter = require('./v1/routers/turnoRouters');
 const db = require('./database/database');
 const Rol = db.rol;
 
@@ -21,6 +23,8 @@ app.use(express.urlencoded({ extended: true })); // Un cliente manda datos de un
 // rutas
 app.use('/api/v1', v1UserRouter);
 app.use('/api/v1/auth', v1AuthRouter);
+app.use('/api/v1/paciente', v1PacienteRouter);
+app.use('/api/v1/turno', v1TurnoRouter);
 
 // sincronizacion con la base de datos
 db.sequelize.sync();

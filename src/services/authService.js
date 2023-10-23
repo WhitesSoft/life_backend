@@ -66,33 +66,31 @@ exports.registeradmin = async (req, res) => {
 
 };
 
-
-
-// registra usuario (paciente)
+// Registra a una persona (moviel)
 exports.register = async (req, res) => {
 
     try {
-        const userWithPaciente = {
+        const userWithPersona = {
             usuario: req.body.usuario,
             password: bcrypt.hashSync(req.body.password, 8),
             correo: req.body.correo,
-            paciente: {
-                nombre: req.body.paciente.nombre,
-                apellido_paterno: req.body.paciente.apellido_paterno,
-                apellido_materno: req.body.paciente.apellido_materno,
-                direccion: req.body.paciente.direccion,
-                fecha_nacimiento: req.body.paciente.fecha_nacimiento,
-                genero: req.body.paciente.genero,
-                telefono: req.body.paciente.telefono,
-                correo: req.body.paciente.correo,
-                estado: req.body.paciente.estado
+            persona: {
+                nombre: req.body.persona.nombre,
+                apellido_paterno: req.body.persona.apellido_paterno,
+                apellido_materno: req.body.persona.apellido_materno,
+                direccion: req.body.persona.direccion,
+                fecha_nacimiento: req.body.persona.fecha_nacimiento,
+                genero: req.body.persona.genero,
+                telefono: req.body.persona.telefono,
+                correo: req.body.persona.correo,
+                estado: req.body.persona.estado
             }
         };
 
-        const newUser = await dbUsuario.create(userWithPaciente, {
+        const newUser = await dbUsuario.create(userWithPersona, {
             include: [{
-                model: dbPaciente,
-                as: 'paciente'
+                model: dbPersona,
+                as: 'persona'
             }]
         });
 
@@ -106,6 +104,45 @@ exports.register = async (req, res) => {
     }
 
 };
+
+// // registra usuario (paciente)
+// exports.register = async (req, res) => {
+
+//     try {
+//         const userWithPaciente = {
+//             usuario: req.body.usuario,
+//             password: bcrypt.hashSync(req.body.password, 8),
+//             correo: req.body.correo,
+//             paciente: {
+//                 nombre: req.body.paciente.nombre,
+//                 apellido_paterno: req.body.paciente.apellido_paterno,
+//                 apellido_materno: req.body.paciente.apellido_materno,
+//                 direccion: req.body.paciente.direccion,
+//                 fecha_nacimiento: req.body.paciente.fecha_nacimiento,
+//                 genero: req.body.paciente.genero,
+//                 telefono: req.body.paciente.telefono,
+//                 correo: req.body.paciente.correo,
+//                 estado: req.body.paciente.estado
+//             }
+//         };
+
+//         const newUser = await dbUsuario.create(userWithPaciente, {
+//             include: [{
+//                 model: dbPaciente,
+//                 as: 'paciente'
+//             }]
+//         });
+
+
+//         // Se le asigna rol por defecto (paciente)
+//         await newUser.setRoles([4]);
+//         res.send("El usuario se registró con éxito!");
+
+//     } catch (error) {
+//         res.status(500).send({ message: error.message });
+//     }
+
+// };
 
 // Login usuario
 exports.login = (req, res) => {
