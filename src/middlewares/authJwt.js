@@ -1,4 +1,4 @@
-const db= require('../database/database');
+const db = require('../database/database');
 const jwt = require("jsonwebtoken");
 const dbUsuario = db.usuario;
 
@@ -7,17 +7,17 @@ verifyToken = (req, res, next) => {
     let token = req.headers["x-access-token"];
 
     if (!token) {
-        return res.status(403).send({
+        return res.status(403).send(JSON.stringify({
             message: "¡No se proporciona un token!"
-        });
+        }));
     }
 
     // aqui verifica el token
     jwt.verify(token, process.env.SECRET_KEY, (error, decoded) => {
         if (error) {
-            return res.status(401).send({
+            return res.status(401).send(JSON.stringify({
                 message: "No autorizado!",
-            });
+            }));
         }
         req.userId = decoded.id;
         console.log("TOKEN userID:" + req.userId);
@@ -37,9 +37,9 @@ isAdmin = (req, res, next) => {
                 }
             }
 
-            res.status(403).send({
+            res.status(403).send(JSON.stringify({
                 message: "¡Requiere rol de administrador!"
-            });
+            }));
             return;
         });
     });
@@ -57,9 +57,9 @@ isAsistente = (req, res, next) => {
                 }
             }
 
-            res.status(403).send({
+            res.status(403).send(JSON.stringify({
                 message: "¡Requiere rol de asistente!"
-            });
+            }));
             return;
         });
     });
@@ -77,9 +77,9 @@ isSecretaria = (req, res, next) => {
                 }
             }
 
-            res.status(403).send({
+            res.status(403).send(JSON.stringify({
                 message: "¡Requiere rol de secretaria!"
-            });
+            }));
             return;
         });
     });
@@ -97,9 +97,9 @@ isPaciente = (req, res, next) => {
                 }
             }
 
-            res.status(403).send({
+            res.status(403).send(JSON.stringify({
                 message: "¡Requiere rol de paciente!"
-            });
+            }));
             return;
         });
     });

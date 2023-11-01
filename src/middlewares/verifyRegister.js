@@ -15,7 +15,7 @@ const dbUsuario = db.usuario;
 //         });
 //         return;
 //       }
-  
+
 //       // Email
 //       dbUsuario.findOne({
 //         where: {
@@ -28,7 +28,7 @@ const dbUsuario = db.usuario;
 //           });
 //           return;
 //         }
-  
+
 //         next();
 //       });
 //     });
@@ -44,9 +44,9 @@ checkDuplicateUsuario = (req, res, next) => {
         }
     }).then(usuario => {
         if (usuario) {
-            res.status(400).send({
+            res.status(400).send(JSON.stringify({
                 message: '¡Error! ¡El nombre de usuario ya está en uso!'
-            });
+            }));
             return;
         }
         next();
@@ -64,9 +64,9 @@ checkDuplicateEmail = (req, res, next) => {
         }
     }).then(usuario => {
         if (usuario) {
-            res.status(400).send({
+            res.status(400).send(JSON.stringify({
                 message: '¡Error! ¡El correo electrónico ya está en uso!'
-            });
+            }));
             return;
         }
         next();
@@ -79,9 +79,9 @@ checkRolesExisted = (req, res, next) => {
     if (req.body.nombre_rol) {
         for (let i = 0; i < req.body.nombre_rol.length; i++) {
             if (!ROLES.includes(req.body.nombre_rol[i])) {
-                res.status(400).send({
+                res.status(400).send(JSON.stringify({
                     message: "¡Fallido! El rol no existe = " + req.body.nombre_rol[i]
-                });
+                }));
                 return;
             }
         }

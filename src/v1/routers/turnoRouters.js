@@ -19,7 +19,7 @@ router
     .delete('/delete/:id', [authJwt.verifyToken, authJwt.isAdmin, authJwt.isAsistente, authJwt.isSecretaria], turnoController.remove)
     .get('/:id', [authJwt.verifyToken, authJwt.isAdmin, authJwt.isAsistente, authJwt.isSecretaria], turnoController.getById)
     .get('/', [authJwt.verifyToken, authJwt.isAdmin, authJwt.isAsistente, authJwt.isSecretaria], turnoController.getAll)
-    .get('/paciente/:idPaciente', [authJwt.verifyToken, authJwt.isAdmin, authJwt.isAsistente, authJwt.isSecretaria], turnoController.getByIdPaciente)
+    .get('/paciente/:idPaciente', [authJwt.verifyToken, authJwt.isAdmin, authJwt.isAsistente, authJwt.isSecretaria], turnoController.getAllTurnosByIdPaciente)
     
     
 module.exports = router;
