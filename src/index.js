@@ -53,27 +53,27 @@ db.sequelize.sync();
 // });
 
 // Creamos por primera vez los roles
-// function initial() {
-//     Rol.create({
-//         id: 1,
-//         nombre_rol: "administrador"
-//     });
+function initial() {
+    Rol.create({
+        id: 1,
+        nombre_rol: "administrador"
+    });
 
-//     Rol.create({
-//         id: 2,
-//         nombre_rol: "asistente"
-//     });
+    Rol.create({
+        id: 2,
+        nombre_rol: "asistente"
+    });
 
-//     Rol.create({
-//         id: 3,
-//         nombre_rol: "secretaria"
-//     });
+    Rol.create({
+        id: 3,
+        nombre_rol: "secretaria"
+    });
 
-//     Rol.create({
-//         id: 4,
-//         nombre_rol: "paciente"
-//     });
-// }
+    Rol.create({
+        id: 4,
+        nombre_rol: "paciente"
+    });
+}
 
 // Ahora escucha nuesto app
 app.listen(PORT, () => {

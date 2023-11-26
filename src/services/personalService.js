@@ -3,9 +3,13 @@ const dbUsuario = db.usuario;
 const dbAsistente = db.asistente
 const dbSecretaria = db.secretaria
 const dbPersonal = db.personal
+const dbAsistenciaPersonal = db.asistencia_personal
+const dbPagos = db.pagos
 const sequelize = db.sequelize
+const { Op } = require("sequelize");
 
 var bcrypt = require('bcryptjs');
+const TARIFA_DIARIA = 100;
 
 exports.registrarPersonalAsistente = async (data) => {
 
@@ -113,8 +117,13 @@ exports.getAllPersonal = async () => {
     return await dbPersonal.findAll();
 }
 
-exports.getById = async(id) => {
+exports.getById = async (id) => {
     return await dbPersonal.findByPk(id);
+}
+
+exports.updatePersonal = async (id, data) => {
+    await dbPersonal.update(data, { where: { id_personal: id } });
+    return await dbPersonal.findOne({ where: { id_personal: id } });
 }
 
 // exports.deletePersonal = async (id) => {
@@ -122,10 +131,69 @@ exports.getById = async(id) => {
 // };
 exports.deletePersonal = async (id) => {
     const asistente = await dbAsistente.findOne({ where: { id_personal: id } });
+    const secretaria = await dbSecretaria.findOne({ where: { id_personal: id } });
     if (asistente) {
         console.log(asistente.id_usuario);
         await dbUsuario.destroy({ where: { id_usuario: asistente.id_usuario } });
         await dbAsistente.destroy({ where: { id_personal: id } });
     }
+
+    if (secretaria) {
+        await dbUsuario.destroy({ where: { id_usuario: asistente.id_usuario } });
+        await dbSecretaria.destroy({ where: { id_personal: id } });
+    }
+
     return await dbPersonal.destroy({ where: { id_personal: id } });
 };
+
+exports.controlarAsistencia = async (idPersonal, fecha, asistio) => {
+
+    const personal = await dbPersonal.findByPk(idPersonal)
+
+    if (!personal) {
+        return null
+    }
+
+    return await dbAsistenciaPersonal.create({
+        id_personal: idPersonal,
+        fecha: fecha,
+        estado_asistencia: asistio
+    })
+
+};
+
+exports.pagosPersonal = async (idPersonal, motivo) => {
+
+    const personal = await dbPersonal.findByPk(idPersonal)
+
+    if (!personal) {
+        return null
+    }
+
+    const inicioMes = new Date();
+    inicioMes.setDate(1);
+    const finMes = new Date(inicioMes.getFullYear(), inicioMes.getMonth() + 1, 0);
+    console.log(inicioMes, finMes);
+
+    const diasTrabajados = await dbAsistenciaPersonal.count({
+        where: {
+            id_personal: idPersonal,
+            fecha: {
+                [Op.between]: [inicioMes, finMes] // filtrar valores por rangos
+            },
+            estado_asistencia: true
+        }
+    });
+
+    console.log(diasTrabajados);
+
+    const monto = diasTrabajados * TARIFA_DIARIA;
+
+    return await dbPagos.create({
+        fecha: new Date(),
+        monto: monto,
+        motivo: motivo,
+        id_personal: idPersonal
+    });
+
+}

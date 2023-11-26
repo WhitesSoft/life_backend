@@ -41,6 +41,8 @@ db.intra_oral = require('../models/historial_intraoral.js')(sequelize, Sequelize
 db.antecedentes_higuiene = require('../models/historial_antecedentes_higuiene.js')(sequelize, Sequelize);
 db.atencion =  require('../models/atencion.model.js')(sequelize, Sequelize);
 db.personal = require('../models/personal.model.js')(sequelize, Sequelize);
+db.asistencia_personal = require('../models/asistencia_personal.model.js')(sequelize, Sequelize);
+db.pagos = require('../models/pagos.model.js')(sequelize, Sequelize);
 
 /* *** RELACIONES *** */
 
@@ -217,6 +219,26 @@ db.personal.hasOne(db.secretaria, {
 })
 db.secretaria.belongsTo(db.personal, {
     foreignKey: 'id_personal', 
+    as: 'personal'
+})
+
+// (Personal y Asistencia) ONE_TO_MANY
+db.personal.hasOne(db.asistencia_personal, {
+    foreignKey: 'id_personal', 
+    as: 'asistencias'    
+})
+db.asistencia_personal.belongsTo(db.personal, {
+    foreignKey: 'id_personal', 
+    as: 'personal'
+})
+
+// (Personal y pagos) ONE_TO_MANY
+db.personal.hasOne(db.pagos, {
+    foreignKey: 'id_personal',
+    as: 'pagos'
+})
+db.pagos.belongsTo(db.personal, {
+    foreignKey: 'id_personal',
     as: 'personal'
 })
 
