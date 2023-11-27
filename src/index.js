@@ -10,8 +10,11 @@ const v1HistorialAntecedenteSaludRouter = require('./v1/routers/historial_antece
 const v1HistorialExtraoralRouter = require('./v1/routers/historial_extraoralRouters');
 const v1HistorialIntraoralRouter = require('./v1/routers/historial_intraoralRouters');
 const v1HistorialAntecedenteHiguieneRouter = require('./v1/routers/historial_antecedente_higuieneRouters');
+const v1ControlesRouter = require('./v1/routers/controlRouters');
 const v1AtencionRouter = require('./v1/routers/atencionRouters');
 const v1PersonalRouter = require('./v1/routers/personalRouters');
+const v1PagosRouter = require('./v1/routers/pagosRouters');
+const v1FacturaRouter = require('./v1/routers/facturaRouters');
 const db = require('./database/database');
 const Rol = db.rol;
 
@@ -42,8 +45,11 @@ app.use('/api/v1/asalud', v1HistorialAntecedenteSaludRouter);
 app.use('/api/v1/extraoral', v1HistorialExtraoralRouter);
 app.use('/api/v1/intraoral', v1HistorialIntraoralRouter);
 app.use('/api/v1/ahiguiene', v1HistorialAntecedenteHiguieneRouter);
+app.use('/api/v1/controles', v1ControlesRouter)
 app.use('/api/v1/atencion', v1AtencionRouter);
-app.use('/api/v1/personal', v1PersonalRouter)
+app.use('/api/v1/personal', v1PersonalRouter);
+app.use('/api/v1/pagos', v1PagosRouter);
+app.use('/api/v1/factura', v1FacturaRouter);
 
 
 // sincronizacion con la base de datos

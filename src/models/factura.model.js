@@ -1,33 +1,33 @@
 module.exports = function (sequelize, DataTypes) {
-    const Atencion = sequelize.define('atencion', {
-        id_atencion: {
+    const Factura = sequelize.define('factura', {
+        id_factura: {
             autoIncrement: true,
             type: DataTypes.INTEGER,
             allowNull: false,
             primaryKey: true
         },
-        nombre: {
-            type: DataTypes.STRING(20),
+        senor: {
+            type: DataTypes.STRING(100),
             allowNull: true
         },
-        apellido_paterno: {
-            type: DataTypes.STRING(30),
-            allowNull: true
-        },
-        apellido_materno: {
-            type: DataTypes.STRING(30),
+        detalle: {
+            type: DataTypes.STRING(100),
             allowNull: true
         },
         fecha: {
             type: DataTypes.DATEONLY,
             allowNull: true
         },
-        monto: {
+        nit: {
             type: DataTypes.INTEGER,
-            allowNull: false 
-        }
+            allowNull: true
+        },
+        total: {
+            type: DataTypes.INTEGER,
+            allowNull: true
+        },
     }, {
         timestamps: false,
     });
-    return Atencion
+    return Factura
 };

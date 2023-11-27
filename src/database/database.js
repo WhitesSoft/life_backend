@@ -39,10 +39,17 @@ db.antecedentes_salud = require('../models/historial_antecedentes_salud.js')(seq
 db.extra_oral = require('../models/historial_extraoral.js')(sequelize, Sequelize);
 db.intra_oral = require('../models/historial_intraoral.js')(sequelize, Sequelize);
 db.antecedentes_higuiene = require('../models/historial_antecedentes_higuiene.js')(sequelize, Sequelize);
+db.controles = require('../models/controles.model.js')(sequelize, Sequelize);
 db.atencion =  require('../models/atencion.model.js')(sequelize, Sequelize);
 db.personal = require('../models/personal.model.js')(sequelize, Sequelize);
 db.asistencia_personal = require('../models/asistencia_personal.model.js')(sequelize, Sequelize);
 db.pagos = require('../models/pagos.model.js')(sequelize, Sequelize);
+db.factura = require('../models/factura.model.js')(sequelize, Sequelize);
+db.proveedor = require('../models/proveedor.model.js')(sequelize, Sequelize);
+db.reportes = require('../models/reportes.model.js')(sequelize, Sequelize);
+db.horario = require('../models/horario.model.js')(sequelize, Sequelize);
+db.inventario = require('../models/inventario.model.js')(sequelize, Sequelize);
+db.notificacion = require('../models/notificacion.model.js')(sequelize, Sequelize);
 
 /* *** RELACIONES *** */
 
@@ -190,6 +197,16 @@ db.antecedentes_higuiene.belongsTo(db.historial_clinico, {
     as: 'historial',
 })
 
+// (HistorialClinico y controles) ONE_TO_MANY
+db.historial_clinico.hasOne(db.controles, {
+    foreignKey: 'id_historial',
+    as: 'controles'
+})
+db.controles.belongsTo(db.historial_clinico, {
+    foreignKey: 'id_historial',
+    as: 'historial'
+})
+
 // (Turno y Atencion) ONE_TO_ONE
 db.turno.hasOne(db.atencion, {
     foreignKey: 'id_turno', 
@@ -241,5 +258,37 @@ db.pagos.belongsTo(db.personal, {
     foreignKey: 'id_personal',
     as: 'personal'
 })
+
+// (Atencion y pagos) ONE_TO_ONE
+db.atencion.hasOne(db.pagos, {
+    foreignKey: 'id_atencion',
+    as: 'pagos'
+})
+db.pagos.belongsTo(db.atencion, {
+    foreignKey: 'id_atencion', 
+    as: 'atencion'
+}) 
+
+// (Pagos y Factura) ONE_TO_ONE
+db.pagos.hasOne(db.factura, {
+    foreignKey: 'id_pago', 
+    as: 'factura'
+})
+db.factura.belongsTo(db.pagos, {
+    foreignKey: 'id_pago', 
+    as: 'pago'
+})
+
+// (Paciente y notifacion) ONE_TO_MANY
+db.paciente.hasOne(db.notificacion, {
+    foreignKey: 'id_paciente',
+    as: 'notificacion'
+})
+db.notificacion.belongsTo(db.paciente, {
+    foreignKey: 'id_paciente',
+    as: 'paciente'
+})
+
+
 
 module.exports = db;

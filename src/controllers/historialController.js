@@ -48,3 +48,16 @@ exports.remove = async (req, res) => {
         res.status(500).send(JSON.stringify({ message: "Error al eliminar el historial." }));
     }
 };
+
+exports.crearControl = async (req, res) => {
+    try {
+        const control = await historialService.crearControl(req.params.id, req.body);
+        if (control) {
+            res.status(200).send(JSON.stringify({ message: "Control creado correctamente" }));
+        } else {
+            res.status(404).send(JSON.stringify({ message: "No existe el historial" }));
+        }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}

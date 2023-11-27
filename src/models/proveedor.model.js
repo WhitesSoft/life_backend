@@ -1,12 +1,12 @@
 module.exports = function (sequelize, DataTypes) {
-    const Atencion = sequelize.define('atencion', {
-        id_atencion: {
+    const Proveedor = sequelize.define('proveedor', {
+        id_proveedor: {
             autoIncrement: true,
             type: DataTypes.INTEGER,
             allowNull: false,
             primaryKey: true
         },
-        nombre: {
+        nombres: {
             type: DataTypes.STRING(20),
             allowNull: true
         },
@@ -18,16 +18,20 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING(30),
             allowNull: true
         },
-        fecha: {
-            type: DataTypes.DATEONLY,
+        direccion: {
+            type: DataTypes.STRING(50),
             allowNull: true
         },
-        monto: {
+        telefono: {
             type: DataTypes.INTEGER,
-            allowNull: false 
+            allowNull: true
+        },
+        estado: {
+            type: DataTypes.BOOLEAN,
+            allowNull: true
         }
     }, {
         timestamps: false,
     });
-    return Atencion
+    return Proveedor
 };
